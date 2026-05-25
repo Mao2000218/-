@@ -5,8 +5,6 @@ import Icon from './Icon';
 export default function UpdateDialog() {
   const [state, setState] = useState(updateChecker.getState());
   const [info, setInfo] = useState<UpdateInfo | null>(null);
-  const [showUrlInput, setShowUrlInput] = useState(false);
-  const [urlInput, setUrlInput] = useState(updateChecker.getUpdateUrl());
 
   useEffect(() => {
     return updateChecker.subscribe(() => {
@@ -14,12 +12,8 @@ export default function UpdateDialog() {
     });
   }, []);
 
-  // Auto-check on startup
   useEffect(() => {
-    const url = updateChecker.getUpdateUrl();
-    if (url) {
-      updateChecker.checkForUpdate().then(setInfo);
-    }
+    updateChecker.checkForUpdate().then(setInfo);
   }, []);
 
   const handleCheck = async () => {
@@ -43,14 +37,6 @@ export default function UpdateDialog() {
     }
   };
 
-  const handleSaveUrl = () => {
-    updateChecker.setUpdateUrl(urlInput.trim());
-    setShowUrlInput(false);
-    if (urlInput.trim()) {
-      updateChecker.checkForUpdate().then(setInfo);
-    }
-  };
-
   const { status, progress, error } = state;
 
   return (
@@ -60,55 +46,18 @@ export default function UpdateDialog() {
           <Icon name="import" size={16} className="text-gray-400" />
           <h3 className="font-semibold text-sm text-white">在线更新</h3>
         </div>
-        {status === 'available' && (
-          <span className="text-xs bg-brand-500/15 text-brand-400 px-2 py-0.5 rounded-full">有新版本</span>
-        )}
-        {status === 'downloaded' && (
-          <span className="text-xs bg-green-500/15 text-green-400 px-2 py-0.5 rounded-full">已就绪</span>
-        )}
+        <div className="flex items-center gap-2">
+          {status === 'available' && (
+            <span className="text-xs bg-brand-500/15 text-brand-400 px-2 py-0.5 rounded-full">有新版本</span>
+          )}
+          {status === 'downloaded' && (
+            <span className="text-xs bg-green-500/15 text-green-400 px-2 py-0.5 rounded-full">已就绪</span>
+          )}
+          <span className="text-[10px] text-gray-600">v26.5.2</span>
+        </div>
       </div>
 
-      {/* Update URL config */}
-      {showUrlInput ? (
-        <div className="flex gap-2 mb-3">
-          <input
-            type="text"
-            placeholder="输入 version.json 完整地址"
-            value={urlInput}
-            onChange={(e) => setUrlInput(e.target.value)}
-            className="flex-1 bg-[#111] border border-[#333] rounded-xl px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-500 transition-colors"
-          />
-          <button
-            onClick={handleSaveUrl}
-            className="bg-brand-500 text-white rounded-xl px-4 py-2 text-sm font-medium hover:bg-brand-600 transition-colors"
-          >
-            确定
-          </button>
-          <button
-            onClick={() => {
-              setShowUrlInput(false);
-              setUrlInput(updateChecker.getUpdateUrl());
-            }}
-            className="text-gray-500 text-sm px-2"
-          >
-            取消
-          </button>
-        </div>
-      ) : (
-        <button
-          onClick={() => setShowUrlInput(true)}
-          className="text-xs text-gray-500 hover:text-gray-400 transition-colors mb-3 block"
-        >
-          {updateChecker.getUpdateUrl() ? updateChecker.getUpdateUrl() : '点击设置更新服务地址'}
-        </button>
-      )}
-
-      {/* Status & actions */}
       <div className="space-y-2">
-        {status === 'idle' && !updateChecker.getUpdateUrl() && (
-          <p className="text-xs text-gray-600">配置更新地址后即可检查更新</p>
-        )}
-
         {status === 'checking' && (
           <div className="flex items-center gap-2 text-sm text-gray-400">
             <div className="w-4 h-4 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
@@ -151,9 +100,8 @@ export default function UpdateDialog() {
           <p className="text-xs text-red-400">{error || '更新失败'}</p>
         )}
 
-        {/* Action buttons */}
         <div className="flex gap-2 pt-1">
-          {(status === 'idle' || status === 'no-update' || status === 'error') && updateChecker.getUpdateUrl() && (
+          {(status === 'idle' || status === 'no-update' || status === 'error') && (
             <button
               onClick={handleCheck}
               className="bg-[#222] border border-[#333] text-gray-300 rounded-xl px-4 py-1.5 text-xs font-medium hover:bg-[#2a2a2a] transition-colors"
