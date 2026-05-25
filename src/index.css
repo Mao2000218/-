@@ -103,6 +103,12 @@ html {
   80% { transform: translateX(4px); }
 }
 
+/* Sidebar slide-in from right */
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
 /* === Animation Classes === */
 .animate-page-enter {
   animation: page-enter 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
@@ -128,6 +134,10 @@ html {
 
 .animate-shake {
   animation: shake 0.5s ease-in-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 /* === Apple-style Glass Card === */

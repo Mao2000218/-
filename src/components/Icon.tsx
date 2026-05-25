@@ -36,7 +36,8 @@ export type IconName =
   | 'target'
   | 'settings'
   | 'chevron-right'
-  | 'construction';
+  | 'construction'
+  | 'menu';
 
 const paths: Record<IconName, { d: string; stroke?: string; fill?: string }[]> = {
   home: [
@@ -155,6 +156,9 @@ const paths: Record<IconName, { d: string; stroke?: string; fill?: string }[]> =
     { d: 'M18 6H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z' },
     { d: 'M10 11h4v4h-4z' },
     { d: 'M9 9h.01M15 9h.01M9 15h.01' },
+  ],
+  menu: [
+    { d: 'M3 6h18M3 12h18M3 18h18' },
   ],
 };
 

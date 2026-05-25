@@ -128,17 +128,20 @@ class UpdateChecker {
       // Save to Capacitor Filesystem if available, otherwise use download fallback
       try {
         const { Filesystem, Directory } = await import('@capacitor/filesystem');
+
+        // Ensure Data directory exists
+        try {
+          await Filesystem.mkdir({ path: '', directory: Directory.Data, recursive: true });
+        } catch { /* directory exists */ }
+
         const base64 = await this.blobToBase64(blob);
 
-        // Write zip to data directory
         await Filesystem.writeFile({
           path: 'update.zip',
           data: base64,
           directory: Directory.Data,
-          recursive: true,
         });
 
-        // Write version info
         await Filesystem.writeFile({
           path: 'update_version.json',
           data: JSON.stringify({ version: info.version, buildTime: info.buildTime }),
@@ -150,10 +153,8 @@ class UpdateChecker {
         this.progress = 100;
         this.notify();
 
-        // Backup localStorage before origin switch (data would be lost otherwise)
         await backupAllData();
 
-        // Signal native to apply on next launch
         await Filesystem.writeFile({
           path: 'hot_update_ready',
           data: info.version,
@@ -161,7 +162,8 @@ class UpdateChecker {
         });
 
         return true;
-      } catch (_) {
+      } catch (err) {
+        console.error('OTA filesystem error:', err);
         // Fallback: trigger browser download for PWA
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -170,7 +172,7 @@ class UpdateChecker {
         a.click();
         URL.revokeObjectURL(url);
         this.status = 'error';
-        this.errorMessage = 'APK环境请通过应用内更新';
+        this.errorMessage = '浏览器环境请使用APK安装包更新';
         this.notify();
         return false;
       }

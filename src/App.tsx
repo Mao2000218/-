@@ -6,7 +6,6 @@ import Dashboard from './pages/Dashboard';
 import CheckInPage from './pages/CheckInPage';
 import GuidancePage from './pages/GuidancePage';
 import ProfilePage from './pages/ProfilePage';
-import SettingsPage from './pages/SettingsPage';
 import SecretPage from './pages/SecretPage';
 import { restoreAllData } from './services/dataBackup';
 
@@ -33,7 +32,6 @@ function AnimatedRoutes() {
         <Route path="/checkin" element={<CheckInPage />} />
         <Route path="/guidance" element={<GuidancePage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<SettingsPage />} />
         <Route path="/secret" element={<SecretPage />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>

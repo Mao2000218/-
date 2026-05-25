@@ -19,8 +19,8 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         applyHotUpdate();
-        super.onCreate(savedInstanceState);
         hotUpdateDir = new File(getFilesDir(), UPDATE_WEB_DIR);
+        super.onCreate(savedInstanceState);
     }
 
     private void applyHotUpdate() {

@@ -7,6 +7,7 @@ import { getMuscleCounts } from '../data/achievements';
 import Icon from '../components/Icon';
 import type { IconName } from '../components/Icon';
 import UpdateDialog from '../components/UpdateDialog';
+import SettingsDrawer from '../components/SettingsDrawer';
 
 const AVATAR_SHAPES = ['circle', 'triangle', 'square', 'diamond', 'hexagon', 'cross', 'star', 'moon'] as const;
 
@@ -136,9 +137,14 @@ export default function ProfilePage() {
 
   return (
     <div className="pb-24 px-4 max-w-lg mx-auto">
-      <h2 className="text-xl font-bold text-center py-4 text-white tracking-wide">
-        个人主页
-      </h2>
+      <div className="flex items-center justify-center relative py-4">
+        <h2 className="text-xl font-bold text-white tracking-wide">
+          个人主页
+        </h2>
+        <div className="absolute right-0">
+          <SettingsDrawer />
+        </div>
+      </div>
 
       {/* Avatar & Nickname */}
       <div className="glass-card rounded-2xl p-6 mb-4 text-center">
@@ -399,7 +405,7 @@ export default function ProfilePage() {
       </div>
 
       <p className="text-center text-xs text-gray-700 pb-4">
-        FitTrack - 健身打卡 v26.5.2
+        FitTrack - 健身打卡 v26.5.4
       </p>
     </div>
   );
