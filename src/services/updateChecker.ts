@@ -4,7 +4,7 @@ import { backupAllData } from './dataBackup';
 const UPDATE_URL_KEY = 'fittrack_update_url';
 const UPDATE_VERSION_KEY = 'fittrack_current_version';
 
-const APP_VERSION = 'v26.5.4';
+const APP_VERSION = 'v26.5.5';
 const DEFAULT_UPDATE_URL = 'https://cdn.jsdelivr.net/gh/Mao2000218/-@main/update/version.json';
 
 export interface UpdateInfo {

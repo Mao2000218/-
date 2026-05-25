@@ -405,7 +405,7 @@ export default function ProfilePage() {
       </div>
 
       <p className="text-center text-xs text-gray-700 pb-4">
-        乐乐 - 健身打卡 v26.5.4
+        乐乐 - 健身打卡 v26.5.5
       </p>
     </div>
   );
