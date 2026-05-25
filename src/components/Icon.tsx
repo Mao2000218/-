@@ -160,7 +160,7 @@ export default function Icon({ name, size = 24, className = '', filled = false }
     >
       {shapes.map((shape, i) => {
         const fillMode = filled && i === 0 ? 'currentColor' : 'none';
-        const fillOpacity = filled && i === 0 ? 0.15 : undefined;
+        const fillOpacity = filled && i === 0 ? 0.35 : undefined;
         return (
           <path
             key={i}

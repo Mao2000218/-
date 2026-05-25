@@ -1,6 +1,7 @@
 const UPDATE_URL_KEY = 'fittrack_update_url';
 const UPDATE_VERSION_KEY = 'fittrack_current_version';
 
+const APP_VERSION = 'v26.5.2';
 const DEFAULT_UPDATE_URL = 'https://github.com/Mao2000218/-/releases/latest/download/version.json';
 
 export interface UpdateInfo {
@@ -47,7 +48,7 @@ class UpdateChecker {
   }
 
   getCurrentVersion(): string {
-    return localStorage.getItem(UPDATE_VERSION_KEY) || 'initial';
+    return localStorage.getItem(UPDATE_VERSION_KEY) || APP_VERSION;
   }
 
   setCurrentVersion(version: string) {
