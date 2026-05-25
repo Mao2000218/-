@@ -399,7 +399,7 @@ export default function ProfilePage() {
       </div>
 
       <p className="text-center text-xs text-gray-700 pb-4">
-        FitTrack - 健身打卡 v1.0
+        FitTrack - 健身打卡 v26.5.2
       </p>
     </div>
   );

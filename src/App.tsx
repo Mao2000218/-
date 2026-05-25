@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import BottomNav from './components/BottomNav';
+import OverscrollBounce from './components/OverscrollBounce';
 import Dashboard from './pages/Dashboard';
 import CheckInPage from './pages/CheckInPage';
 import GuidancePage from './pages/GuidancePage';
@@ -39,7 +40,9 @@ export default function App() {
   return (
     <HashRouter>
       <div className="min-h-screen bg-[#111] text-white selection:bg-brand-500/30">
-        <AnimatedRoutes />
+        <OverscrollBounce>
+          <AnimatedRoutes />
+        </OverscrollBounce>
         <BottomNav />
       </div>
     </HashRouter>
