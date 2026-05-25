@@ -5,7 +5,7 @@
 
 set -e
 
-VERSION="${1:-$(date +%Y%m%d%H%M%S)}"
+VERSION="${1:-v26.5.4}"
 DIST_DIR="dist"
 UPDATE_DIR="update"
 
@@ -50,8 +50,9 @@ with open('$UPDATE_DIR/version.json', 'w') as f:
 
 echo ""
 echo "=== Done ==="
-echo "Upload these 2 files to your server:"
+echo "Files created in update/ directory:"
 echo "  1. $UPDATE_DIR/version.json"
 echo "  2. $UPDATE_DIR/update.zip"
 echo ""
-echo "Then set UPDATE_URL in the app to point to version.json"
+echo "Next: git add update/ && git commit -m 'OTA update' && git push"
+echo "CDN URL: https://cdn.jsdelivr.net/gh/Mao2000218/-@main/update/version.json"

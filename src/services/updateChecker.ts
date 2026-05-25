@@ -1,8 +1,8 @@
 const UPDATE_URL_KEY = 'fittrack_update_url';
 const UPDATE_VERSION_KEY = 'fittrack_current_version';
 
-const APP_VERSION = 'v26.5.2';
-const DEFAULT_UPDATE_URL = 'https://github.com/Mao2000218/-/releases/latest/download/version.json';
+const APP_VERSION = 'v26.5.3';
+const DEFAULT_UPDATE_URL = 'https://cdn.jsdelivr.net/gh/Mao2000218/-@main/update/version.json';
 
 export interface UpdateInfo {
   version: string;
@@ -19,6 +19,8 @@ export type UpdateStatus =
   | 'downloaded'
   | 'error'
   | 'no-update';
+
+import { backupAllData } from './dataBackup';
 
 class UpdateChecker {
   private status: UpdateStatus = 'idle';
@@ -147,6 +149,9 @@ class UpdateChecker {
         this.status = 'downloaded';
         this.progress = 100;
         this.notify();
+
+        // Backup localStorage before origin switch (data would be lost otherwise)
+        await backupAllData();
 
         // Signal native to apply on next launch
         await Filesystem.writeFile({
