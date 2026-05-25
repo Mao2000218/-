@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import Icon from './Icon';
@@ -10,22 +10,23 @@ const tabs = [
   { path: '/profile', icon: 'person' as const },
 ];
 
-const DRAG_THRESHOLD = 5;
+const DRAG_THRESHOLD = 30;
+const TAP_THRESHOLD = 8;
 
 export default function BottomNav() {
   const location = useLocation();
+  const navigate = useNavigate();
   const navRef = useRef<HTMLDivElement>(null);
-  const glassRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const [dragOffset, setDragOffset] = useState(0);
-  const [dropletPhase, setDropletPhase] = useState<'idle' | 'expand' | 'contract'>('idle');
+  const [isPressed, setIsPressed] = useState(false);
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
   const hasMoved = useRef(false);
   const springFrame = useRef(0);
-  const dropletTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const totalDrag = useRef(0);
 
   const activeIndex = tabs.findIndex((t) => t.path === location.pathname);
 
@@ -47,10 +48,11 @@ export default function BottomNav() {
 
   const springBack = useCallback(() => {
     setDragOffset((prev) => {
-      if (Math.abs(prev) < 0.2) return 0;
-      return prev * 0.75;
+      const next = prev * 0.8;
+      if (Math.abs(next) < 0.3) return 0;
+      return next;
     });
-    if (Math.abs(dragOffset) > 0.2) {
+    if (Math.abs(dragOffset) > 1) {
       springFrame.current = requestAnimationFrame(() => springBack());
     }
   }, [dragOffset]);
@@ -58,46 +60,51 @@ export default function BottomNav() {
   useEffect(() => {
     return () => {
       if (springFrame.current) cancelAnimationFrame(springFrame.current);
-      if (dropletTimer.current) clearTimeout(dropletTimer.current);
     };
   }, []);
 
-  const triggerDroplet = () => {
-    setDropletPhase('expand');
-    dropletTimer.current = setTimeout(() => {
-      setDropletPhase('contract');
-      dropletTimer.current = setTimeout(() => {
-        setDropletPhase('idle');
-      }, 400);
-    }, 120);
-  };
+  const handleNavigate = useCallback((direction: number) => {
+    const newIndex = Math.max(0, Math.min(tabs.length - 1, activeIndex - direction));
+    if (newIndex !== activeIndex) {
+      navigate(tabs[newIndex].path);
+    }
+  }, [activeIndex, navigate]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
+    // Don't initiate drag if tapping on a link
     if ((e.target as HTMLElement).closest('a')) return;
     isDragging.current = true;
     hasMoved.current = false;
+    totalDrag.current = 0;
     dragStartX.current = e.clientX;
+    setIsPressed(true);
     if (springFrame.current) cancelAnimationFrame(springFrame.current);
-    triggerDroplet();
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging.current) return;
     const dx = e.clientX - dragStartX.current;
-    if (Math.abs(dx) < DRAG_THRESHOLD && !hasMoved.current) return;
+    if (Math.abs(dx) < TAP_THRESHOLD && !hasMoved.current) return;
     if (!hasMoved.current) {
       hasMoved.current = true;
-      setDropletPhase('idle');
       navRef.current?.style.setProperty('pointer-events', 'none');
     }
-    const clamped = Math.max(-40, Math.min(40, dx));
+    totalDrag.current = dx;
+    const clamped = Math.max(-60, Math.min(60, dx));
     setDragOffset(clamped);
   };
 
   const handlePointerUp = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
+    setIsPressed(false);
+
     if (hasMoved.current) {
+      // Check if drag exceeds threshold for navigation
+      const dx = totalDrag.current;
+      if (Math.abs(dx) >= DRAG_THRESHOLD) {
+        handleNavigate(dx > 0 ? -1 : 1);
+      }
       setTimeout(() => {
         navRef.current?.style.removeProperty('pointer-events');
       }, 120);
@@ -105,18 +112,12 @@ export default function BottomNav() {
     }
   };
 
+  // Glass scale: 1 → 1.04 on press
+  const glassScale = isPressed ? 1.04 : 1;
+
   const gx = dragOffset * 0.2;
   const gs = dragOffset * 0.012;
   const px = dragOffset * 0.45;
-
-  // Droplet scale: 1 → 1.025 → 0.985 → 1
-  const dropletScale =
-    dropletPhase === 'expand' ? 1.028 :
-    dropletPhase === 'contract' ? 0.985 :
-    1;
-
-  // Refraction intensifies during droplet expand
-  const refractionOpacity = dropletPhase === 'expand' ? 0.6 : dropletPhase === 'contract' ? 0.25 : 0.3;
 
   return (
     <nav className="fixed bottom-4 left-4 right-4 z-50 flex justify-center">
@@ -130,9 +131,8 @@ export default function BottomNav() {
         onPointerCancel={handlePointerUp}
         style={{ touchAction: 'pan-x' }}
       >
-        {/* === Frosted glass container — droplet scale === */}
+        {/* Frosted glass container */}
         <div
-          ref={glassRef}
           className="absolute inset-0 rounded-[28px]"
           style={{
             background: 'rgba(30, 30, 32, 0.5)',
@@ -143,57 +143,15 @@ export default function BottomNav() {
               0 0 0 0.5px rgba(255,255,255,0.07) inset,
               0 0 0 1px rgba(255,255,255,0.04)
             `,
-            transform: `translateX(${gx}px) skewX(${gs}deg) scale(${dropletScale})`,
+            transform: `translateX(${gx}px) skewX(${gs}deg) scale(${glassScale})`,
             transformOrigin: 'center center',
-            transition:
-              dropletPhase !== 'idle'
-                ? 'transform 0.12s ease-out'
-                : 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transition: isDragging.current
+              ? 'none'
+              : 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         />
 
-        {/* === Chromatic refraction edge ring — subtle color fringe === */}
-        <div
-          className="absolute inset-[1px] rounded-[27px] pointer-events-none overflow-hidden"
-          style={{
-            opacity: refractionOpacity,
-            transition: 'opacity 0.15s ease-out',
-          }}
-        >
-          <div
-            className="absolute inset-0 rounded-[27px]"
-            style={{
-              background: `
-                conic-gradient(
-                  from 0deg,
-                  rgba(255,130,80,0.12) 0deg,
-                  rgba(255,190,70,0.08) 30deg,
-                  rgba(180,230,100,0.06) 60deg,
-                  rgba(80,200,240,0.08) 90deg,
-                  rgba(100,150,255,0.08) 120deg,
-                  rgba(170,110,240,0.1) 150deg,
-                  rgba(255,130,180,0.09) 180deg,
-                  rgba(255,130,80,0.12) 210deg,
-                  rgba(255,190,70,0.08) 240deg,
-                  rgba(180,230,100,0.06) 270deg,
-                  rgba(80,200,240,0.08) 300deg,
-                  rgba(100,150,255,0.08) 330deg,
-                  rgba(170,110,240,0.1) 360deg
-                )
-              `,
-              WebkitMask: 'radial-gradient(ellipse 98% 92% at 50% 50%, transparent 0%, black 60%, transparent 95%)',
-              mask: 'radial-gradient(ellipse 98% 92% at 50% 50%, transparent 0%, black 60%, transparent 95%)',
-              transform: `translateX(${gx}px) skewX(${gs}deg) scale(${dropletScale})`,
-              transformOrigin: 'center center',
-              transition:
-                dropletPhase !== 'idle'
-                  ? 'transform 0.12s ease-out'
-                  : 'transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            }}
-          />
-        </div>
-
-        {/* === Active pill indicator === */}
+        {/* Active pill indicator */}
         <div
           className="absolute top-[5px] bottom-[5px] rounded-[22px] pointer-events-none"
           style={{
@@ -210,7 +168,7 @@ export default function BottomNav() {
           }}
         />
 
-        {/* === Tab icons === */}
+        {/* Tab icons */}
         {tabs.map((tab, i) => {
           const isActive = i === activeIndex;
           return (

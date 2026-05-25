@@ -1,3 +1,5 @@
+import { Filesystem, Directory } from '@capacitor/filesystem';
+
 // Backup all localStorage data to Capacitor Filesystem before hot update redirect
 // Restore on startup to prevent data loss across origin switches (http://localhost → file://)
 
@@ -14,7 +16,6 @@ const APP_KEYS = [
 
 export async function backupAllData(): Promise<boolean> {
   try {
-    const { Filesystem, Directory } = await import('@capacitor/filesystem');
     const snapshot: Record<string, string | null> = {};
     for (const key of APP_KEYS) {
       snapshot[key] = localStorage.getItem(key);
@@ -32,7 +33,6 @@ export async function backupAllData(): Promise<boolean> {
 
 export async function restoreAllData(): Promise<boolean> {
   try {
-    const { Filesystem, Directory } = await import('@capacitor/filesystem');
     const result = await Filesystem.readFile({
       path: BACKUP_FILE,
       directory: Directory.Data,
@@ -45,7 +45,6 @@ export async function restoreAllData(): Promise<boolean> {
         localStorage.removeItem(key);
       }
     }
-    // Delete backup after successful restore
     await Filesystem.deleteFile({
       path: BACKUP_FILE,
       directory: Directory.Data,

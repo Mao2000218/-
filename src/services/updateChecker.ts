@@ -1,3 +1,6 @@
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { backupAllData } from './dataBackup';
+
 const UPDATE_URL_KEY = 'fittrack_update_url';
 const UPDATE_VERSION_KEY = 'fittrack_current_version';
 
@@ -19,8 +22,6 @@ export type UpdateStatus =
   | 'downloaded'
   | 'error'
   | 'no-update';
-
-import { backupAllData } from './dataBackup';
 
 class UpdateChecker {
   private status: UpdateStatus = 'idle';
@@ -125,15 +126,12 @@ class UpdateChecker {
       // Combine chunks
       const blob = new Blob(chunks as BlobPart[], { type: 'application/zip' });
 
-      // Save to Capacitor Filesystem if available, otherwise use download fallback
+      // Save to Capacitor Filesystem
       try {
-        const { Filesystem, Directory } = await import('@capacitor/filesystem');
+        await Filesystem.mkdir({ path: '.', directory: Directory.Data, recursive: true });
+      } catch { /* directory exists */ }
 
-        // Ensure Data directory exists
-        try {
-          await Filesystem.mkdir({ path: '', directory: Directory.Data, recursive: true });
-        } catch { /* directory exists */ }
-
+      try {
         const base64 = await this.blobToBase64(blob);
 
         await Filesystem.writeFile({
@@ -172,7 +170,7 @@ class UpdateChecker {
         a.click();
         URL.revokeObjectURL(url);
         this.status = 'error';
-        this.errorMessage = '浏览器环境请使用APK安装包更新';
+        this.errorMessage = '浏览器环境，请使用APK更新';
         this.notify();
         return false;
       }
