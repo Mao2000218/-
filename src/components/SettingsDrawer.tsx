@@ -73,7 +73,7 @@ export default function SettingsDrawer() {
 
             {/* Version info */}
             <div className="absolute bottom-8 left-0 right-0 text-center">
-              <p className="text-xs text-gray-700">FitTrack v26.5.4</p>
+              <p className="text-xs text-gray-700">乐乐 v26.5.4</p>
             </div>
           </div>
 

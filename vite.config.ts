@@ -11,8 +11,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'FitTrack - 健身打卡',
-        short_name: 'FitTrack',
+        name: '乐乐 - 健身打卡',
+        short_name: '乐乐',
         description: '简洁的健身打卡与指导应用',
         theme_color: '#111111',
         background_color: '#111111',

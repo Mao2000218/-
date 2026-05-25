@@ -41,7 +41,7 @@ export default function RestTimer({ onComplete }: RestTimerProps) {
           setRunning(false);
           if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
           if (Notification.permission === 'granted') {
-            new Notification('FitTrack 计时器', { body: '休息时间结束，继续训练！' });
+            new Notification('乐乐计时器', { body: '休息时间结束，继续训练！' });
           }
           onComplete?.();
         } else {

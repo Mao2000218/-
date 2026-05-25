@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.fittrack.app',
-  appName: 'FitTrack',
+  appName: '乐乐',
   webDir: 'dist'
 };
 

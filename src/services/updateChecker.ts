@@ -166,7 +166,7 @@ class UpdateChecker {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'fittrack-update.zip';
+        a.download = 'lele-update.zip';
         a.click();
         URL.revokeObjectURL(url);
         this.status = 'error';

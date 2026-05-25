@@ -112,7 +112,7 @@ export default function ProfilePage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `fittrack-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `lele-backup-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -405,7 +405,7 @@ export default function ProfilePage() {
       </div>
 
       <p className="text-center text-xs text-gray-700 pb-4">
-        FitTrack - 健身打卡 v26.5.4
+        乐乐 - 健身打卡 v26.5.4
       </p>
     </div>
   );

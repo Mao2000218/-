@@ -13,7 +13,7 @@ if ($LASTEXITCODE -eq 0) {
     $apk = Get-ChildItem -Path "app\build\outputs\apk\debug" -Filter "*.apk" | Select-Object -First 1
     if ($apk) {
         New-Item -ItemType Directory -Force -Path "D:\前端\app" | Out-Null
-        Copy-Item $apk.FullName "D:\前端\app\fittrack.apk" -Force
-        Write-Host "APK copied to D:\前端\app\fittrack.apk ($([math]::Round($apk.Length/1MB, 2)) MB)"
+        Copy-Item $apk.FullName "D:\前端\app\lele.apk" -Force
+        Write-Host "APK copied to D:\前端\app\lele.apk ($([math]::Round($apk.Length/1MB, 2)) MB)"
     }
 }

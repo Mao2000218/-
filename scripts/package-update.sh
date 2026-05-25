@@ -9,7 +9,7 @@ VERSION="${1:-v26.5.4}"
 DIST_DIR="dist"
 UPDATE_DIR="update"
 
-echo "=== FitTrack OTA Update Packager ==="
+echo "=== 乐乐 OTA Update Packager ==="
 echo "Version: $VERSION"
 
 # Build web assets
