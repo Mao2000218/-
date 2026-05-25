@@ -57,9 +57,17 @@ export default function Dashboard() {
 
   return (
     <div className="pb-24 px-4 max-w-lg mx-auto">
-      <h2 className="text-xl font-bold text-center py-4 text-white tracking-wide">
-        你好，{profile.nickname}
-      </h2>
+      <div className="flex items-center justify-center relative py-4">
+        <h2 className="text-xl font-bold text-white tracking-wide">
+          你好，{profile.nickname}
+        </h2>
+        <button
+          onClick={() => navigate('/settings')}
+          className="absolute right-0 p-2 text-gray-500 hover:text-gray-300 transition-colors"
+        >
+          <Icon name="settings" size={20} />
+        </button>
+      </div>
 
       {/* Today Status — glass card */}
       <div className="glass-card rounded-2xl p-5 mb-4">
