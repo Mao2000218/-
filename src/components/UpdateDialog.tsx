@@ -40,7 +40,7 @@ export default function UpdateDialog() {
   const { status, progress, error } = state;
 
   return (
-    <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+    <div className="glass-card rounded-2xl p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Icon name="import" size={16} className="text-gray-400" />

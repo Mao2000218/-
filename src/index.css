@@ -16,23 +16,37 @@
   --color-border: #333333;
 }
 
-/* Page enter animation */
+/* === Safe Area (status bar) === */
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+}
+
+body {
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+html {
+  overflow-x: hidden;
+  background: #111;
+}
+
+/* === Apple Spring Curves === */
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-/* Modal slide-up */
 @keyframes modal-in {
   from {
     opacity: 0;
-    transform: translateY(40px) scale(0.96);
+    transform: translateY(60px) scale(0.94);
   }
   to {
     opacity: 1;
@@ -45,19 +59,10 @@
   to { opacity: 1; }
 }
 
-/* Tab icon bounce */
-@keyframes tab-bounce {
-  0% { transform: translateY(0); }
-  30% { transform: translateY(-6px) scale(1.15); }
-  60% { transform: translateY(0) scale(0.95); }
-  100% { transform: translateY(0) scale(1); }
-}
-
-/* Record item slide in */
 @keyframes slide-in {
   from {
     opacity: 0;
-    transform: translateX(-8px);
+    transform: translateX(-12px);
   }
   to {
     opacity: 1;
@@ -65,10 +70,10 @@
   }
 }
 
-/* Button press */
-@keyframes press {
-  from { transform: scale(1); }
-  to { transform: scale(0.95); }
+/* Glass highlight sweep */
+@keyframes glass-sweep {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
 }
 
 /* Progress bar shimmer */
@@ -77,28 +82,33 @@
   100% { background-position: 200% 0; }
 }
 
+/* Subtle float */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* Pulse glow */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+  50% { box-shadow: 0 0 16px 4px rgba(249, 115, 22, 0.12); }
+}
+
+/* === Animation Classes === */
 .animate-page-enter {
-  animation: page-enter 0.35s ease-out both;
+  animation: page-enter 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .animate-modal-overlay {
-  animation: modal-overlay-in 0.25s ease-out both;
+  animation: modal-overlay-in 0.3s ease-out both;
 }
 
 .animate-modal {
-  animation: modal-in 0.3s ease-out both;
-}
-
-.animate-tab-bounce {
-  animation: tab-bounce 0.4s ease-out both;
+  animation: modal-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .animate-slide-in {
-  animation: slide-in 0.3s ease-out both;
-}
-
-.animate-press:active {
-  animation: press 0.15s ease-out both;
+  animation: slide-in 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .animate-shimmer {
@@ -107,14 +117,83 @@
   animation: shimmer 2s linear infinite;
 }
 
-/* Global overscroll */
-body {
-  overscroll-behavior-y: none;
-  -webkit-overflow-scrolling: touch;
+/* === Apple-style Glass Card === */
+.glass-card {
+  background: rgba(26, 26, 26, 0.65);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+  position: relative;
+  overflow: hidden;
 }
 
-html {
-  overflow-x: hidden;
+.glass-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.03) 70%, transparent 100%);
+  pointer-events: none;
+}
+
+/* === Apple-style Interactive Surface === */
+.surface-apple {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.35),
+    0 0.5px 0 rgba(255, 255, 255, 0.03) inset;
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.surface-apple:active {
+  transform: scale(0.985);
+  box-shadow:
+    0 1px 8px rgba(0, 0, 0, 0.3),
+    0 0.5px 0 rgba(255, 255, 255, 0.02) inset;
+}
+
+/* === Apple-style Button === */
+.btn-apple {
+  background: #f97316;
+  color: white;
+  font-weight: 500;
+  border-radius: 14px;
+  padding: 10px 20px;
+  border: none;
+  box-shadow:
+    0 2px 8px rgba(249, 115, 22, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    0 0.5px 0 rgba(255, 255, 255, 0.15) inset;
+  transition: all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+  cursor: pointer;
+}
+
+.btn-apple:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 1px 4px rgba(249, 115, 22, 0.2),
+    0 0.5px 0 rgba(255, 255, 255, 0.08) inset;
+}
+
+/* === Bottom Nav Liquid Glass (used by BottomNav inline styles) === */
+.nav-liquid {
+  background: rgba(24, 24, 24, 0.5);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.55),
+    0 2px 0 rgba(255, 255, 255, 0.05) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.15) inset;
 }
 
 /* Custom scrollbar */
@@ -122,6 +201,5 @@ html {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
 
-/* Hide scrollbar for category filter */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

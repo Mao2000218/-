@@ -141,7 +141,7 @@ export default function ProfilePage() {
       </h2>
 
       {/* Avatar & Nickname */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-6 mb-4 text-center border border-[#2a2a2a]">
+      <div className="glass-card rounded-2xl p-6 mb-4 text-center">
         <div className="flex justify-center gap-3 mb-4 flex-wrap">
           {AVATAR_SHAPES.map((shape) => (
             <button
@@ -194,22 +194,22 @@ export default function ProfilePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-4">
-        <div className="bg-[#1a1a1a] rounded-2xl border border-[#2a2a2a] p-4 text-center hover:border-brand-500/30 transition-all duration-200">
+        <div className="glass-card rounded-2xl p-4 text-center hover:border-brand-500/30 transition-all duration-200">
           <div className="text-2xl font-bold text-brand-500">{totalDays}</div>
           <div className="text-xs text-gray-500 mt-1">累计打卡</div>
         </div>
-        <div className="bg-[#1a1a1a] rounded-2xl border border-[#2a2a2a] p-4 text-center hover:border-brand-500/30 transition-all duration-200">
+        <div className="glass-card rounded-2xl p-4 text-center hover:border-brand-500/30 transition-all duration-200">
           <div className="text-2xl font-bold text-brand-400">{consecutiveDays}</div>
           <div className="text-xs text-gray-500 mt-1">连续打卡</div>
         </div>
-        <div className="bg-[#1a1a1a] rounded-2xl border border-[#2a2a2a] p-4 text-center hover:border-brand-500/30 transition-all duration-200">
+        <div className="glass-card rounded-2xl p-4 text-center hover:border-brand-500/30 transition-all duration-200">
           <div className="text-2xl font-bold text-brand-300">{monthDays}</div>
           <div className="text-xs text-gray-500 mt-1">本月打卡</div>
         </div>
       </div>
 
       {/* Weekly Goal */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+      <div className="glass-card rounded-2xl p-4 mb-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm text-gray-300">每周打卡目标</span>
           {editingGoal ? (
@@ -253,7 +253,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Training Frequency Chart */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+      <div className="glass-card rounded-2xl p-4 mb-4">
         <div className="flex items-center gap-2 mb-3">
           <Icon name="chart" size={16} className="text-gray-400" />
           <h3 className="font-semibold text-sm text-white">近30天训练频率</h3>
@@ -267,7 +267,7 @@ export default function ProfilePage() {
 
       {/* Muscle Distribution */}
       {muscleData.length > 0 && (
-        <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+        <div className="glass-card rounded-2xl p-4 mb-4">
           <div className="flex items-center gap-2 mb-3">
             <Icon name="body" size={16} className="text-gray-400" />
             <h3 className="font-semibold text-sm text-white">肌群训练分布</h3>
@@ -277,7 +277,7 @@ export default function ProfilePage() {
       )}
 
       {/* Body Data */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+      <div className="glass-card rounded-2xl p-4 mb-4">
         <h3 className="font-semibold mb-3 text-white">身体数据记录</h3>
         <div className="flex gap-2 mb-4">
           <input
@@ -334,7 +334,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Achievements */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+      <div className="glass-card rounded-2xl p-4 mb-4">
         <div className="flex items-center gap-2 mb-3">
           <Icon name="star" size={16} className="text-gray-400" />
           <h3 className="font-semibold text-sm text-white">
@@ -377,14 +377,14 @@ export default function ProfilePage() {
       <div className="flex gap-3 mb-4">
         <button
           onClick={handleExport}
-          className="flex-1 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl py-2.5 text-sm text-gray-400 hover:border-brand-500/50 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
+          className="flex-1 surface-apple rounded-xl py-2.5 text-sm text-gray-400 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
         >
           <Icon name="export" size={16} />
           导出数据
         </button>
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="flex-1 bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl py-2.5 text-sm text-gray-400 hover:border-brand-500/50 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
+          className="flex-1 surface-apple rounded-xl py-2.5 text-sm text-gray-400 hover:text-brand-400 transition-colors flex items-center justify-center gap-2"
         >
           <Icon name="import" size={16} />
           导入数据

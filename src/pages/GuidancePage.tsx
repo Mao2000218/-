@@ -43,7 +43,7 @@ export default function GuidancePage() {
           <div
             key={ex.id}
             onClick={() => setSelectedExercise(ex)}
-            className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-4 cursor-pointer hover:border-brand-500/40 hover:shadow-lg hover:shadow-brand-500/5 transition-all duration-200 active:scale-[0.99]"
+            className="glass-card rounded-2xl p-4 cursor-pointer transition-all duration-300 active:scale-[0.98]"
             style={{ animationDelay: `${idx * 40}ms` }}
           >
             <div className="flex items-center justify-between">
@@ -72,7 +72,7 @@ export default function GuidancePage() {
             onClick={() => setSelectedExercise(null)}
           >
             <div
-              className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-t-3xl sm:rounded-3xl w-full sm:max-w-md max-h-[80vh] overflow-y-auto p-6 animate-modal"
+              className="bg-[#1c1c1c]/95 backdrop-blur-xl border border-white/[0.06] rounded-t-3xl sm:rounded-3xl w-full sm:max-w-md max-h-[80vh] overflow-y-auto p-6 animate-modal shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Drag handle */}

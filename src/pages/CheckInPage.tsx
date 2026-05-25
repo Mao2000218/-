@@ -81,8 +81,8 @@ export default function CheckInPage() {
         健身打卡
       </h2>
 
-      {/* Calendar */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+      {/* Calendar — glass card */}
+      <div className="glass-card rounded-2xl p-4 mb-4">
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={prevMonth}
@@ -135,8 +135,8 @@ export default function CheckInPage() {
         </div>
       </div>
 
-      {/* Add Exercise Form */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-4 mb-4 border border-[#2a2a2a]">
+      {/* Add Exercise Form — glass card */}
+      <div className="glass-card rounded-2xl p-4 mb-4">
         <h3 className="font-semibold mb-3 text-white">
           {isToday(selectedStr) ? '今日打卡' : `${selectedStr} 补打卡`}
         </h3>
@@ -231,8 +231,8 @@ export default function CheckInPage() {
         </div>
       </div>
 
-      {/* Daily Records */}
-      <div className="bg-[#1a1a1a] rounded-2xl p-4 border border-[#2a2a2a] mb-4">
+      {/* Daily Records — glass card */}
+      <div className="glass-card rounded-2xl p-4 mb-4">
         <h3 className="font-semibold mb-3 text-white">{selectedStr} 训练记录</h3>
         {currentRecords.length === 0 ? (
           <p className="text-gray-600 text-sm text-center py-6">暂无记录</p>

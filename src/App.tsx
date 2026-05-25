@@ -39,7 +39,10 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <HashRouter>
-      <div className="min-h-screen bg-[#111] text-white selection:bg-brand-500/30">
+      <div
+        className="min-h-screen bg-[#111] text-white selection:bg-brand-500/30"
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
         <OverscrollBounce>
           <AnimatedRoutes />
         </OverscrollBounce>
